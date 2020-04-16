@@ -33,5 +33,6 @@ plt.ylabel("Confirmed Cases", fontsize=34, labelpad=40, color='#949494')
 plt.xlabel("Date", fontsize=34, labelpad=40, color='#949494')
 filename = 'Line_Chart_by_Country_{}.png'.format(yesterday.strftime('%b%d'))
 
-print('Saving Line graph to: ', filename)
-plt.savefig(filename, transparent=True, bbox_inches='tight')
+flask_dir = '/home/matt/Documents/Projects/WebDev/mmitchell_net/FlaskApp/static/images/covid19/'
+print('Saving Line graph to: ', flask_dir+filename)
+plt.savefig(flask_dir+filename, transparent=True, bbox_inches='tight')
