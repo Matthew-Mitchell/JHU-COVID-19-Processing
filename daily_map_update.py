@@ -20,8 +20,7 @@ df = pd.read_csv(jhuBaseDir+'archived_data/archived_time_series/time_series_19-c
 dfs = [] #Make a list of dfs
 #Iterate through desired date columns and create df
 dates = ['1/22/20','1/26/20', '2/2/20', '2/9/20', '2/16/20', '2/23/20',
-         '3/1/20','3/5/20','3/8/20','3/12/20', '3/16/20', '3/18/20', '3/19/20', '3/20/20', '3/21/20',
-         '3/22/20']
+         '3/1/20','3/5/20','3/8/20','3/12/20', '3/16/20', '3/20/20']
 standard_cols = ['Province/State', 'Country/Region', 'Lat', 'Long']
 for col in dates:
     temp = df[standard_cols+[col]]
@@ -40,13 +39,22 @@ daily_dir = jhuBaseDir + 'csse_covid_19_data/csse_covid_19_daily_reports/'
 
 d1 = date(2020, 3, 23)  # start date
 y, m, d = [int(x) for x in datetime.now().strftime('%Y-%m-%d').split('-')]
-d2 = date(y, m, d)  # end date
+d2 = date(y, m, d)  # end date (Today)
 delta = d2 - d1         # timedelta
+weekago = d2 - timedelta(weeks=1)
+interval = 4
+nIntervals = (weekago - d1).days // interval
 
 dates = []
 
-for i in range(delta.days):
-    d = d1 + timedelta(i)
+#Once a week until a week ago
+for i in range(nIntervals):
+    d = d1 + timedelta(i*interval)
+    dates.append(d.strftime('%m-%d-%Y'))
+
+#Daily For Past Week
+for i in range(7):
+    d = weekago + timedelta(i)
     dates.append(d.strftime('%m-%d-%Y'))
 
 files = [date+'.csv' for date in dates]
