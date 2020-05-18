@@ -12,20 +12,24 @@ print("Loading ", filename)
 transformed = pd.read_csv(dir_+filename)
 # transformed.head()
 
+#Manually select countries
+countries = ['US', 'Spain', 'Italy', 'United Kingdom', 'China', 'Korea, South', 'Iran']
+transformed = transformed[transformed['Country/Region'].isin(countries)]
+
 print("Generating line graph.")
 # byCountry = df.groupby('Country/Region')[dates].sum().transpose()
-current = transformed[transformed['Date']=='2020-03-30']
+current = transformed[transformed['Date']==yesterday.strftime('%Y-%m-%d')]
 curCountryTotals = current.groupby(['Country/Region'])['ConfirmedCases'].sum()
 # top_25=byCountry.max().sort_values(ascending=False)[:20].index
-top_10=curCountryTotals.sort_values(ascending=False)[:20].index
+top_10=curCountryTotals.sort_values(ascending=False)[:10].index
 
 #If Country Total Exists, Remove BreakOuts
 grouped = transformed.groupby(['Country/Region', 'Date'])['ConfirmedCases'].sum().reset_index()
 byCountry = grouped.pivot(columns='Country/Region', index='Date', values='ConfirmedCases')
 byCountry.at['2020-03-23', 'France'] = 19874 #Manually Fix France
 byCountry[top_10].plot(kind='line', figsize=(20,12))
-plt.legend(loc=(1.05,.4), fontsize='24', ncol=2)
-plt.title("Top 20 Countries by COVID-19 Confirmed Cases", fontsize=34, weight='bold', pad=40)
+plt.legend(loc=(1.05,.6), fontsize='24', ncol=1)
+plt.title("COVID-19 Confirmed Cases by Country", fontsize=34, weight='bold', pad=40)
 
 plt.xticks(fontsize=20, color="black", weight='bold')
 plt.yticks(fontsize=20, color="black", weight='bold');
