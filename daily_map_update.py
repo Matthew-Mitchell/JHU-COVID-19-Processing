@@ -60,11 +60,14 @@ for i in range(delta.days):
 files = [date+'.csv' for date in dates]
 
 # dfs = []
+
 for i, file in enumerate(files):
     daily = pd.read_csv(daily_dir+file)
     columns = ['Province_State', 'Country_Region', 'Last_Update', 'Combined_Key',
                'Lat', 'Long_', 'Confirmed', 'Deaths', 'Recovered', 'Active'
               ]
+    if i == 0:
+      print("Columns:", daily.columns)
     daily = daily.rename({'Province_State':'Province/State',
                          'Country_Region':'Country/Region',
                          'Confirmed':'ConfirmedCases',
